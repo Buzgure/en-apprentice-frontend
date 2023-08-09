@@ -60,7 +60,6 @@ function renderHomePageBackend(){
   mainContentDiv.innerHTML = getHomePageTemplate();
   console.log('function', fetchTicketEvents());
   fetchTicketEvents().then((data) => {
-    console.log('data', data);
     addEvents(data);
   });
 
@@ -93,7 +92,7 @@ const createEvent = (eventData) => {
 }
 
 const createEventElement = (eventData) => {
-  const {id, img, eventName, eventDescription, eventType, venue, startDate, endDate} = eventData;
+  const {id, img, eventName, eventDescription, eventType, venue, startDate, endDate, ticketCategory} = eventData;
   const eventDiv = document.createElement('div');
   eventDiv.classList.add('card');
   const contentMarkup = `
@@ -109,10 +108,70 @@ const createEventElement = (eventData) => {
         <p class="horizontal-layout-item text p text-gray-700">${startDate}</p>
         <p class="horizontal-layout-item text p text-gray-700">${endDate}</p>
         </div>
+        <label class="vertical-layout-item tickets ">Select ticket category:
+      </label>
       </div>
       
     `;
     eventDiv.innerHTML = contentMarkup;
+    const ticketData = eventData.ticketCategory;
+    const ticketCard = document.createElement('select');
+    ticketCard.classList.add('ticket-select');
+    
+    // Add a title or label option
+    const titleOption = document.createElement('option');
+    titleOption.disabled = true;
+    titleOption.selected = true;
+    titleOption.textContent = 'Select Ticket Category';
+    ticketCard.appendChild(titleOption);
+
+    ticketData.forEach(ticket => {
+      const option = document.createElement('option');
+      option.value = ticket.description;
+      option.textContent = ticket.description;
+      ticketCard.appendChild(option);
+    });
+
+    const ticketContainer = eventDiv.querySelector('.tickets');
+    ticketContainer.appendChild(ticketCard);
+    //
+    const quantitySelector = document.createElement('input');
+    quantitySelector.type = 'number';
+    quantitySelector.min = 0;
+    quantitySelector.value = 0;
+    quantitySelector.classList.add('quantity-selector');
+    ///
+
+    const addToCartButton = document.createElement('button');
+    addToCartButton.textContent = 'Add to Cart';
+    addToCartButton.classList.add('add-to-cart-button');
+    addToCartButton.style.display = 'none';
+
+    quantitySelector.addEventListener('input', () => {
+      const quantity = parseInt(quantitySelector.value);
+      addToCartButton.style.display = quantity > 0 ? 'block' : 'none';
+    });
+
+    // Event listener for adding to cart
+    addToCartButton.addEventListener('click', () => {
+      const selectedTicket = ticketCard.value;
+      const selectedQuantity = parseInt(quantitySelector.value);
+      if (selectedQuantity > 0) {
+        console.log(`Added ${selectedQuantity} ${selectedTicket} for ${event.name} tickets to cart.`);
+      }
+    });
+    eventDiv.appendChild(quantitySelector);
+    eventDiv.appendChild(addToCartButton);
+    
+    
+
+
+
+
+
+
+
+    
     // const ticketData = eventData.ticketCategories;
     return eventDiv;
 
