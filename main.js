@@ -164,15 +164,6 @@ const createEventElement = (eventData) => {
     eventDiv.appendChild(addToCartButton);
     
     
-
-
-
-
-
-
-
-    
-    // const ticketData = eventData.ticketCategories;
     return eventDiv;
 
 
