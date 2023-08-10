@@ -77,10 +77,11 @@ h1 {
   padding: 10px;
   margin: 10px;
   width: 300px;
-  background-color: #838080;
+  background-color: #ff9900; /* Orange background color */
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
+  color: gray; /* White content color */
 }
 
 .card img{
@@ -89,6 +90,8 @@ h1 {
   height: auto;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
   
 }
 
@@ -109,6 +112,8 @@ h1 {
 .vertical-layout-item {
   margin: 10px;
   padding: 10px;
+  color:white;
+  font-weight: bold
 }
 
 .horizontal-layout {
@@ -120,6 +125,8 @@ h1 {
   margin: 10px;
   padding: 10px;
   display: flex;
+  color:white;
+  font-weight: bold
 }
 
 .add-to-cart-button {
@@ -136,4 +143,26 @@ h1 {
 
 .add-to-cart-button:hover {
   background-color: #0056b3;
+}
+
+.tickets {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.ticket-select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.quantity-selector {
+  width: 60px;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  text-align: center;
 }

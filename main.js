@@ -101,14 +101,14 @@ const createEventElement = (eventData) => {
       </header>
       <div class="vertical-layout-item vertical-layout">
         <img src="./src/assets/event1.jpg" alt="${eventName}" class="vertical-layout-item img rounded object-cover mb-4"/>
-        <p class="vertical-layout-item text p text-gray-700">${eventDescription}</p>
-        <p class="vertical-layout-item text p text-gray-700">${eventType}</p>
-        <p class="vertical-layout-item text p text-gray-700">${venue}</p>
+        <p class="vertical-layout-item text p ">${eventDescription}</p>
+        <p class="vertical-layout-item text p ">${eventType}</p>
+        <p class="vertical-layout-item text p ">${venue}</p>
         <div class = "horizontal-layout">
         <p class="horizontal-layout-item text p text-gray-700">${startDate}</p>
         <p class="horizontal-layout-item text p text-gray-700">${endDate}</p>
         </div>
-        <label class="vertical-layout-item tickets ">Select ticket category:
+        <label class="text-gray-700 tickets ">Select ticket category:
       </label>
       </div>
       
@@ -207,7 +207,7 @@ function renderHomePage() {
       </header>
       <div class="horizontal-layout-item vertical-layout">
         <img src="${event.img}" alt="${event.name}" class="vertical-layout-item img rounded object-cover mb-4"/>
-        <p class="vertical-layout-item text p text-gray-700">${event.description}</p>
+        <p class="vertical-layout-item text">${event.description}</p>
         <label class="vertical-layout-item tickets ">Select ticket category:
       </label>
       </div>
