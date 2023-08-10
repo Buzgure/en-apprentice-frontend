@@ -101,6 +101,7 @@ const createEventElement = (eventData) => {
       <header class="vertical-layout-item">
         <h2 class="event-title text-2xl font-bold">${eventName}</h2>
       </header>
+      <div class=" delimiter-line vertical-layout-item"></div>
       <div class="vertical-layout-item vertical-layout">
         <img src="./src/assets/event1.jpg" alt="${eventName}" class="vertical-layout-item img rounded object-cover mb-4"/>
         <p class="vertical-layout-item text p ">${eventDescription}</p>
@@ -110,7 +111,7 @@ const createEventElement = (eventData) => {
         <p class="horizontal-layout-item text p text-gray-700">${startDate}</p>
         <p class="horizontal-layout-item text p text-gray-700">${endDate}</p>
         </div>
-        <label class="text-gray-700 tickets ">Select ticket category:
+        <label class="tickets" style="color: rgb(243, 64, 64);;"> Choose ticket type:
       </label>
       </div>
       
@@ -124,7 +125,7 @@ const createEventElement = (eventData) => {
     const titleOption = document.createElement('option');
     titleOption.disabled = true;
     titleOption.selected = true;
-    titleOption.textContent = 'Select Ticket Category';
+    titleOption.textContent = 'Choose ticket type';
     ticketCard.appendChild(titleOption);
 
     ticketData.forEach(ticket => {

@@ -77,11 +77,11 @@ h1 {
   padding: 10px;
   margin: 10px;
   width: 300px;
-  background-color: #ff9900; /* Orange background color */
+  background-color: #f7f4f0; /* Orange background color */
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: gray; /* White content color */
+  color: rgb(241, 50, 50); /* White content color */
 }
 
 .card img{
@@ -112,7 +112,7 @@ h1 {
 .vertical-layout-item {
   margin: 10px;
   padding: 10px;
-  color:white;
+  color:rgb(243, 64, 64);
   font-weight: bold
 }
 
@@ -125,7 +125,7 @@ h1 {
   margin: 10px;
   padding: 10px;
   display: flex;
-  color:white;
+  color:rgb(243, 64, 64);
   font-weight: bold
 }
 
@@ -133,7 +133,7 @@ h1 {
   display: none;
   margin-top: 10px;
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: rgb(243, 64, 64);;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -199,4 +199,11 @@ h1 {
 
 .order-text-gray-700 {
   color: #4A5568; /* Gray color */
+}
+
+.delimiter-line {
+  border-top: 1px solid #0056b3; /* Adjust color and thickness as needed */
+  margin-top: 10px; /* Add spacing above and below the delimiter */
+  border-color:#4A5568;
+  flex-grow: 1;
 }
