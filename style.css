@@ -166,3 +166,37 @@ h1 {
   border-radius: 4px;
   text-align: center;
 }
+
+.order-card {
+  background-color: #F0E68C; /* Warm green color */
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.order-vertical-layout {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.order-horizontal-layout {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.order-text {
+  font-size: 16px;
+}
+
+.order-p {
+  margin: 0;
+  padding: 0;
+}
+
+.order-text-gray-700 {
+  color: #4A5568; /* Gray color */
+}
