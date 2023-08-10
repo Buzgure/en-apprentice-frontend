@@ -154,10 +154,15 @@ const createEventElement = (eventData) => {
 
     // Event listener for adding to cart
     addToCartButton.addEventListener('click', () => {
+      const a = ticketCard;
       const selectedTicket = ticketCard.value;
+      const ticketIndex = eventData.ticketCategory.findIndex(ticketName => ticketName.description == selectedTicket);
+      const selectedTicketObject = eventData.ticketCategory[ticketIndex];
       const selectedQuantity = parseInt(quantitySelector.value);
+      const ticketPrice = selectedTicketObject.price * selectedQuantity;
       if (selectedQuantity > 0) {
-        console.log(`Added ${selectedQuantity} ${selectedTicket} for ${event.name} tickets to cart.`);
+        console.log(handleAddToCart(selectedQuantity, ticketPrice, selectedTicketObject.ticketCategoryId));
+        console.log(`Added ${selectedQuantity} ${selectedTicket} for ${eventData.eventName} tickets to cart.`);
       }
     });
     eventDiv.appendChild(quantitySelector);
@@ -167,6 +172,41 @@ const createEventElement = (eventData) => {
     return eventDiv;
 
 
+
+}
+
+const handleAddToCart = (input, price, ticketId) => {
+  const quantity = input;
+  if (parseInt(quantity)){
+      fetch('https://localhost:7203/api/Order/addOrder', {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({
+          ticketCategoryId:+ticketId,
+          customerName:"Alexe Alexandru",
+          orderedAt:Date.now,
+          numberOfTickets:+quantity,
+          totalPrice:+price,
+
+
+        })
+      }).then((response)=>{
+        return response.json().then((data) => {
+          if(!response.ok){
+            console.log("Something went wrong!");
+          }
+         return data;
+        })
+
+      }).then((data) => {
+        addOrder(data);
+      }) ;
+
+  }else{
+
+  }
 
 }
 
