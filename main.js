@@ -161,7 +161,8 @@ const createEventElement = (eventData) => {
       const selectedQuantity = parseInt(quantitySelector.value);
       const ticketPrice = selectedTicketObject.price * selectedQuantity;
       if (selectedQuantity > 0) {
-        console.log(handleAddToCart(selectedQuantity, ticketPrice, selectedTicketObject.ticketCategoryId));
+        const date = new Date().toISOString();;
+        handleAddToCart(selectedQuantity, ticketPrice, selectedTicketObject.ticketCategoryId, date);
         console.log(`Added ${selectedQuantity} ${selectedTicket} for ${eventData.eventName} tickets to cart.`);
       }
     });
@@ -175,7 +176,7 @@ const createEventElement = (eventData) => {
 
 }
 
-const handleAddToCart = (input, price, ticketId) => {
+const handleAddToCart = (input, price, ticketId, date) => {
   const quantity = input;
   if (parseInt(quantity)){
       fetch('https://localhost:7203/api/Order/addOrder', {
@@ -186,7 +187,7 @@ const handleAddToCart = (input, price, ticketId) => {
         body:JSON.stringify({
           ticketCategoryId:+ticketId,
           customerName:"Alexe Alexandru",
-          orderedAt:Date.now,
+          orderedAt:date,
           numberOfTickets:+quantity,
           totalPrice:+price,
 
