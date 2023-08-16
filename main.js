@@ -1,3 +1,4 @@
+
 // Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
@@ -18,9 +19,27 @@ function getOrdersPageTemplate() {
   return `
     <div id="content">
       <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
-      <div class="orders flex items-center justify-center flex-wrap">
+      <div class="orders place-items-center p-2 grid gap-2 grid-cols-7" id="order-container">
+        <div>  
+        <button class="flex flex-1 text-center justify-center" id="sorting-button-1">
+          <span>Name</span>
+          <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-1"></i>
+          </button>
+          </div>
+          <div class="flex-1 text-center justify-center">Nr.tickets</div>
+          <div class="flex-1 text-center justify-center">Category</div>
+          <div class="flex-1 hidden md:flex text-center justify-center">Date</div>
+          <div>
+          <button class="hidden md:flex text-center justify-center" id="sorting-button-2">
+          <span text-center justify-center>Price</span>
+          <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-2"></i>
+          </button>
+          </div>
+          <div class="col-span-1 w-16"></div>
+          <div class="col-span-1 w-16"></div>
+        </div>
       </div>
-    </div>
+
   `;
 }
 
@@ -94,8 +113,9 @@ const createEvent = (eventData) => {
 }
 
 const createEventElement = (eventData) => {
-  const {id, img, eventName, eventDescription, eventType, venue, startDate, endDate, ticketCategory} = eventData;
+  const {id, img, eventName, eventDescription, eventType, venue, startDate, endDate, ticketCategory, imageUrl} = eventData;
   const eventDiv = document.createElement('div');
+  const imga = imageUrl;
   eventDiv.classList.add('card');
   const contentMarkup = `
       <header class="vertical-layout-item">
@@ -103,7 +123,7 @@ const createEventElement = (eventData) => {
       </header>
       <div class=" delimiter-line vertical-layout-item"></div>
       <div class="vertical-layout-item vertical-layout">
-        <img src="./src/assets/event1.jpg" alt="${eventName}" class="vertical-layout-item img rounded object-cover mb-4"/>
+        <img src="${imageUrl}" alt="${eventName}" class="vertical-layout-item img rounded object-cover mb-4"/>
         <p class="vertical-layout-item text p ">${eventDescription}</p>
         <p class="vertical-layout-item text p ">${eventType}</p>
         <p class="vertical-layout-item text p ">${venue}</p>
@@ -111,7 +131,7 @@ const createEventElement = (eventData) => {
         <p class="horizontal-layout-item text p text-gray-700">${startDate}</p>
         <p class="horizontal-layout-item text p text-gray-700">${endDate}</p>
         </div>
-        <label class="tickets" style="color: rgb(243, 64, 64);;"> Choose ticket type:
+        <label class="tickets" style="color: rgb(243, 64, 64);"> Choose ticket type:
       </label>
       </div>
       
@@ -234,12 +254,15 @@ async function fetchOrders(){
 
 const addOrders = ((orders) => {
   const orderDiv = document.querySelector('.orders');
-  orderDiv.innerHTML = 'No orders';
+  const orderContent = document.getElementById('order-container');
+  // orderContent.innerHTML = 'No orders';
   if (orders.length){
-    orderDiv.innerHTML ='';
+    // orderContent.innerHTML ='';
     orders.forEach(order => {
-      orderDiv.appendChild(createOrder(order));
+      // orderContent.appendChild(createOrder(order));
+      createOrder(order);
     })
+    orderDiv.appendChild(orderContent);
     
   }
 })
@@ -253,32 +276,63 @@ const createOrder = ((orderData) => {
 })
 
 const createOrderElement = ((orderData) => {
- const {orderId, customerName, orderedAt, numberOfTickets, totalPrice} = orderData;
- const orderDiv = document.createElement('div');
- orderDiv.classList.add('card');
-  const contentMarkup = `
-      <header class="vertical-layout-item">
-        <h2 class="order-title text-2xl font-bold">${orderId}</h2>
-      </header>
-      <div class="vertical-layout-item order-vertical-layout">
-        <p class="vertical-layout-item text order-p ">${customerName}</p>
-        <p class="vertical-layout-item text order-p ">${orderedAt}</p>
-        <div class = "order-horizontal-layout">
-        <p class="horizontal-layout-item order-text p">No of tickets:</p>
-        <p class="horizontal-layout-item text p order-text-gray-700">${numberOfTickets}</p>
-        </div>
-        <div class = "horizontal-layout">
-        <p class="horizontal-layout-item order-text p">Price: </p>
-        <p class="horizontal-layout-item text p order-text-gray-700">${totalPrice}</p>
-        </div>
-        
-      </div>
-      
-    `;
-    orderDiv.innerHTML = contentMarkup;
-  return orderDiv;
+  const {orderId, customerName, orderedAt, numberOfTickets, totalPrice, ticketCategoryName} = orderData;
+  const orderDiv = document.createElement('div');
+  const orderCard = 'order-'+orderId;
+  const orderContainer = document.getElementById('order-container');
+  const customer = document.createElement('div');
+  customer.textContent = customerName;
+  orderContainer.append(customer);
+  const ticketsNo = document.createElement('div');
+  ticketsNo.textContent = numberOfTickets;
+  orderContainer.append(numberOfTickets);
+  const ticketName = document.createElement('div');
+  ticketName.textContent = ticketCategoryName;
+  const date = document.createElement('div');
+  date.textContent = orderedAt;
+  const price = document.createElement('div');
+  price.textContent = totalPrice;
+  orderContainer.append(ticketName);
+  orderContainer.append(date);
+  orderContainer.append(price);
+  const editButton = document.createElement('div');
+  editButton.classList.add('col-span-1');
+  editButton.classList.add('w-16');
+  editButton.innerHTML = `<button class="text-center justify-center" id="edit-button">
+  <i class="fa-solid fa-pencil" id="edit-button"></i>
+</button>`
+orderContainer.append(editButton);
+const deleteButton = document.createElement('div');
+deleteButton.classList.add('col-span-1');
+deleteButton.classList.add('w-16');
+deleteButton.innerHTML = `<button class=" text-center justify-center" id="delete-button">
+<i class="fa-solid fa-trash-can" id="delete-button"></i>
+</button>`
+orderContainer.append(deleteButton);
 
-})
+
+  const contentMarkup = `
+  <div class="text-center custom-width custom-height">${customerName}</div>
+  <div class="text-center custom-width custom-height">${numberOfTickets}</div>
+  <div class="text-center custom-width custom-height">${ticketCategoryName}</div>
+  <div class="text-center custom-width custom-height">${orderedAt}</div>
+  <div class="text-center custom-width custom-height">${totalPrice}</div>
+  <div>
+  <button class="text-center justify-center" id="edit-button">
+    <i class="fa-solid fa-pencil" id="edit-button"></i>
+  </button>
+  </div>
+  <div>
+   <button class=" text-center justify-center" id="delete-button">
+    <i class="fa-solid fa-trash-can" id="delete-button"></i>
+  </button>
+  </div>
+`;
+
+  // orderContainer.append(contentMarkup);
+  
+});
+
 
 // Render content based on URL
 function renderContent(url) {

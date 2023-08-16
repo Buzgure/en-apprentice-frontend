@@ -1,4 +1,5 @@
 module.exports = {
+  purge: {enabled: true, content:['./*']},
   content: [
     "./index.html", // Add the path to your HTML files
     "./src/**/*.html",
