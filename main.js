@@ -8,7 +8,16 @@ function navigateTo(url) {
 function getHomePageTemplate() {
   return `
    <div id="content" >
-      <img src="./src/assets/Endava.png" alt="summer">
+      <img src="./src/assets/pxfuel.jpg" alt="summer">
+      <div class="flex flex-col items-center">
+        <div class="w-80">
+          <h1>Explore events</h1>
+          <div class="filters flex flex-col">
+            <input type="text" id="filter-name" placefolder="Filter by name" class="px-4 mt-4 mb-4 py-2 border" />
+            <button id="filter-button" class ="filter-btn px-4 py-2 text-white rounded-lg bg-red-500">Filter</button>
+          </div>
+        </div>
+      </div>
       <div class="events flex items-center justify-center flex-wrap">
       </div>
     </div>
@@ -41,6 +50,30 @@ function getOrdersPageTemplate() {
       </div>
 
   `;
+}
+
+function liveSearch(){
+  const filterInput = document.querySelector('#filter-name');
+  if(filterInput){
+    const searchValue = filterInput.value;
+
+    if(searchValue !== undefined){
+      const filteredEvents = events.filter((event) => 
+      event.eventName.toLowerCase().includes(searchValue.toLowerCase()));
+      addEvents(filteredEvents);
+    }
+  }
+}
+
+function setupFilterEvents(){
+  const nameFilterInput= document.querySelector('#filter-name');
+  nameFilterInput.addEventListener('keyup', () =>{
+    setTimeout(() => {
+      liveSearch();
+    }, 500);
+    
+  })
+
 }
 
 function setupNavigationEvents() {
@@ -83,12 +116,14 @@ function renderHomePageBackend(){
   fetchTicketEvents().then((data) => {
     addEvents(data);
   });
+  setupFilterEvents();
 
 }
-
+let events = [];
 async function fetchTicketEvents(){
   const response = await fetch('https://localhost:7203/api/Event/GetAll');
   const data = await response.json();
+  events = data;
   return data;
 
 
