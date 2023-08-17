@@ -114,11 +114,99 @@ function renderHomePageBackend(){
   mainContentDiv.innerHTML = getHomePageTemplate();
   console.log('function', fetchTicketEvents());
   fetchTicketEvents().then((data) => {
+    createCheckboxesForEvents(data);
     addEvents(data);
   });
   setupFilterEvents();
 
 }
+function setupHtmlForEventType(filtersContainer){
+  const eventTypeFilterDiv = document.createElement('div');
+  eventTypeFilterDiv.classList.add('filter-container');
+  const eventTypeTitlte = document.createElement('h3');
+  eventTypeTitlte.textContent = 'Filter By Event Type';
+  eventTypeFilterDiv.appendChild(eventTypeTitlte);
+  filtersContainer.appendChild(eventTypeFilterDiv);
+  return eventTypeFilterDiv;
+
+}
+
+async function handleCheckBoxFilter(){
+  const filters = getFilters();
+  if(!filters.length){
+    const events = await fetchTicketEvents();  
+    addEvents(events);
+  }
+  console.log('filters', filters);
+  try{
+    const filteredData = await getTicketEvents(filters);
+    addEvents(filteredData);
+
+  }catch (error){
+    console.error('Error fetching filtered events', error);
+  }
+
+}
+function getTicketEvents(filters){
+  const queryParams = new URLSearchParams(filters).toString();
+  const query = 'https://localhost:7203/api/Event/GetEventsByEventType?'+queryParams;
+  const result = fetch(query,{
+    method: 'GET',
+    headers:{
+      'Content-Type': 'application/json',
+
+    },
+
+  }
+  ).then((res) => res.json()).then((data) => {
+    return [...data];
+  });
+  return result;
+ 
+}
+
+function getFilters(){
+  const eventTypeFilters = Array.from(document.querySelectorAll('[id^="filter-by-event-type"]'))
+    .filter((checkBox) => checkBox.checked).map((checkBox) => checkBox.value);
+    return {
+      eventType: eventTypeFilters,
+    };
+  }
+
+
+function createCheckbox(type, value){
+  const checkBoxContainer = document.createElement('div');
+  const checkBox = document.createElement('input');
+
+  checkBox.type = 'checkbox';
+  checkBox.id = 'filter-by-'+type+'-'+value;
+  checkBox.value = value;
+  checkBox.addEventListener('change', () => handleCheckBoxFilter());
+  const label = document.createElement('label');
+  label.setAttribute('for', 'filter-by-${type}-${value}');
+  label.textContent = value;
+  checkBoxContainer.appendChild(checkBox);
+  checkBoxContainer.appendChild(label);
+
+  return checkBoxContainer;
+
+}
+
+function createCheckboxesForEvents(events){
+  const eventTypeSet = new Set(events.map((event) => event.eventType));
+  const filterContainer = document.querySelector('.filters');
+  const addFiltersContainer = document.createElement('div');
+
+  const eventTypeFilterDiv = setupHtmlForEventType(filterContainer);
+  eventTypeSet.forEach((eventType) => {
+    const checkBoxContainer = createCheckbox('event-type', eventType);
+    eventTypeFilterDiv.appendChild(checkBoxContainer);
+
+  });
+
+
+}
+
 let events = [];
 async function fetchTicketEvents(){
   const response = await fetch('https://localhost:7203/api/Event/GetAll');
@@ -148,10 +236,11 @@ const createEvent = (eventData) => {
 }
 
 const createEventElement = (eventData) => {
-  const {id, img, eventName, eventDescription, eventType, venue, startDate, endDate, ticketCategory, imageUrl} = eventData;
+  const {eventId, img, eventName, eventDescription, eventType, venue, startDate, endDate, ticketCategory, imageUrl} = eventData;
   const eventDiv = document.createElement('div');
   const imga = imageUrl;
   eventDiv.classList.add('card');
+  eventDiv.classList.add(eventId);
   const contentMarkup = `
       <header class="vertical-layout-item">
         <h2 class="event-title text-2xl font-bold">${eventName}</h2>
